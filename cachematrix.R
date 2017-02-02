@@ -1,15 +1,29 @@
-## Put comments here that give an overall description of what your
-## functions do
+### The two functions below reduce processing time on calculating the inverse of
+### a matrix, 'x'.  An error will be returned if the matrix is not invertible.
 
-## Write a short comment describing this function
-
+## The makeCacheMatrix function creates a list of matrix objects that can cache its inverse.
 makeCacheMatrix <- function(x = matrix()) {
-
+     invx <- NULL
+     set <- function(y) {
+          x <<- y
+          invx <<- NULL
+     }
+     get <- function() x
+     setinv <- function(inversex) invx <<- inversex 
+     getinv <- function() invx
+     list(set = set, get = get, setinv = setinv, getinv = getinv)
 }
 
 
-## Write a short comment describing this function
-
+### This function checks if the inverse of a matrix already exists in the cache.
+### If not, the inverse is computed and stored in the cache.
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+     invx <- x$getinv()
+     if(!is.null(invx)) {
+          message("Getting cached data...")
+          return(invx)
+     }
+     invx <- solve(x)
+     x$setinv(invx)
+     invx
 }
